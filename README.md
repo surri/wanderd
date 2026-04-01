@@ -1,16 +1,17 @@
 <div align="center">
-  <img src="icons/icon.png" alt="wanderd" width="128" />
+  <img src="https://raw.githubusercontent.com/surri/wanderd/main/icons/icon.png" alt="wanderd" width="128" />
   <h1>wanderd</h1>
-  <p><strong>Visual Entity-Relationship Diagram editor for VS Code</strong></p>
+  <p><strong>Visual Entity-Relationship Diagram editor</strong></p>
   <p>Design database schemas visually. Import/export SQL. Connect with AI assistants via MCP.</p>
 
-  <a href="https://marketplace.visualstudio.com/items?itemName=wanderd.wanderd"><img src="https://img.shields.io/visual-studio-marketplace/v/wanderd.wanderd" alt="Version" /></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=wanderd.wanderd"><img src="https://img.shields.io/visual-studio-marketplace/v/wanderd.wanderd" alt="VS Code Marketplace" /></a>
+  <a href="https://open-vsx.org/extension/wanderd/wanderd"><img src="https://img.shields.io/open-vsx/v/wanderd/wanderd" alt="Open VSX" /></a>
   <a href="https://marketplace.visualstudio.com/items?itemName=wanderd.wanderd"><img src="https://img.shields.io/visual-studio-marketplace/i/wanderd.wanderd" alt="Installs" /></a>
 </div>
 
 ---
 
-![wanderd ERD Editor](images/hero.png)
+![wanderd ERD Editor](https://raw.githubusercontent.com/surri/wanderd/main/images/hero.png)
 
 ## Features
 
@@ -44,16 +45,11 @@ wanderd includes a built-in [Model Context Protocol](https://modelcontextprotoco
 
 ## Installation
 
-1. Open VS Code
-2. Press `Ctrl+Shift+X` (or `Cmd+Shift+X` on macOS)
-3. Search for **"wanderd"**
-4. Click **Install**
+Search for **"wanderd"** in the Extensions panel (`Ctrl+Shift+X` / `Cmd+Shift+X`) and click **Install**.
 
-Or install from the command line:
-
-```bash
-code --install-extension wanderd.wanderd
-```
+Available on:
+- [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=wanderd.wanderd)
+- [Open VSX Registry](https://open-vsx.org/extension/wanderd/wanderd) (Cursor, Kiro)
 
 ## Quick Start
 
@@ -112,8 +108,9 @@ code --install-extension wanderd.wanderd
 wanderd's built-in MCP server lets AI assistants work with your ERD diagrams. It auto-registers with supported clients on extension activation.
 
 **Supported AI clients:**
-- Claude Code
+- Claude Code / Claude Desktop
 - Cursor
+- Kiro
 - Gemini
 - Codex
 
