@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>wanderd — Visual ERD editor for VS Code, Cursor & desktop</title>
+  <meta name="description" content="Design database schemas visually. Import/export SQL across PostgreSQL, MySQL, and SQLite. Connect AI assistants via MCP. Available for VS Code, Cursor, and macOS." />
+  <link rel="icon" type="image/png" href="icons/icon.png" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="wanderd — Visual ERD editor" />
+  <meta property="og:description" content="Design database schemas visually. SQL import/export, multi-dialect, AI/MCP integration. For VS Code, Cursor, and macOS." />
+  <meta property="og:image" content="https://raw.githubusercontent.com/surri/wanderd/main/images/hero.png" />
+  <meta property="og:url" content="https://surri.github.io/wanderd/" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <style>
+    :root {
+      --bg: #0b0b12;
+      --bg-soft: #12121d;
+      --surface: #181826;
+      --border: #262638;
+      --text: #e7e7f0;
+      --muted: #9a9ab0;
+      --accent: #7c3aed;
+      --accent-2: #a78bfa;
+      --accent-glow: rgba(124, 58, 237, 0.35);
+      --radius: 14px;
+      --maxw: 1080px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .wrap { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+    /* Ambient background glow */
+    body::before {
+      content: "";
+      position: fixed;
+      top: -30%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 900px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    header, main, footer { position: relative; z-index: 1; }
+
+    /* Nav */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0;
+    }
+    nav .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; }
+    nav .brand img { width: 30px; height: 30px; border-radius: 7px; }
+    nav .links { display: flex; align-items: center; gap: 22px; font-size: 14px; color: var(--muted); }
+    nav .links a:hover { color: var(--text); }
+    @media (max-width: 640px) { nav .links a.hide-sm { display: none; } }
+
+    /* Hero */
+    .hero { text-align: center; padding: 64px 0 40px; }
+    .hero .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border: 1px solid var(--border); border-radius: 999px;
+      background: var(--surface); color: var(--muted); font-size: 13px; margin-bottom: 26px;
+    }
+    .hero .badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-2); box-shadow: 0 0 8px var(--accent-2); }
+    .hero h1 {
+      font-size: clamp(40px, 7vw, 68px); line-height: 1.05; letter-spacing: -0.03em; font-weight: 800;
+      background: linear-gradient(180deg, #ffffff 0%, #c9c6e0 100%);
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p.sub { font-size: clamp(17px, 2.4vw, 21px); color: var(--muted); max-width: 620px; margin: 22px auto 0; }
+
+    /* CTAs */
+    .ctas { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-top: 38px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 13px 22px; border-radius: 12px; font-size: 15px; font-weight: 600;
+      border: 1px solid var(--border); background: var(--surface); color: var(--text);
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    .btn:hover { transform: translateY(-2px); border-color: #3a3a52; }
+    .btn svg { width: 18px; height: 18px; }
+    .btn.primary {
+      background: linear-gradient(180deg, var(--accent-2) 0%, var(--accent) 100%);
+      border-color: transparent; color: #fff;
+      box-shadow: 0 8px 30px var(--accent-glow);
+    }
+    .btn.primary:hover { box-shadow: 0 12px 40px var(--accent-glow); }
+    .btn .meta { font-size: 12px; font-weight: 500; opacity: 0.8; }
+    .hint { margin-top: 16px; font-size: 13px; color: var(--muted); }
+
+    /* Hero shot */
+    .shot { margin: 56px auto 0; max-width: 980px; }
+    .shot img {
+      width: 100%; height: auto; display: block; border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.02);
+    }
+
+    /* Features */
+    section.features { padding: 96px 0 40px; }
+    .section-head { text-align: center; margin-bottom: 56px; }
+    .section-head h2 { font-size: clamp(28px, 4vw, 40px); letter-spacing: -0.02em; font-weight: 800; }
+    .section-head p { color: var(--muted); margin-top: 12px; font-size: 16px; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    @media (max-width: 860px) { .grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 26px 22px; transition: border-color .15s ease, transform .15s ease;
+    }
+    .card:hover { border-color: #34344c; transform: translateY(-3px); }
+    .card .ico {
+      width: 42px; height: 42px; border-radius: 11px; display: flex; align-items: center; justify-content: center;
+      background: rgba(124,58,237,0.14); color: var(--accent-2); margin-bottom: 16px;
+    }
+    .card .ico svg { width: 22px; height: 22px; }
+    .card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+    .card p { color: var(--muted); font-size: 14.5px; }
+
+    /* CTA band */
+    .band { text-align: center; padding: 80px 0 96px; }
+    .band h2 { font-size: clamp(26px, 4vw, 36px); letter-spacing: -0.02em; font-weight: 800; }
+    .band p { color: var(--muted); margin: 12px 0 30px; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border); padding: 36px 0; color: var(--muted); font-size: 14px; }
+    footer .wrap { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
+    footer .fl { display: flex; align-items: center; gap: 8px; }
+    footer .fl img { width: 22px; height: 22px; border-radius: 6px; }
+    footer a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <nav>
+        <a class="brand" href="#top">
+          <img src="icons/icon.png" alt="wanderd logo" />
+          <span>wanderd</span>
+        </a>
+        <div class="links">
+          <a href="#features" class="hide-sm">Features</a>
+          <a href="https://marketplace.visualstudio.com/items?itemName=wanderd.wanderd" class="hide-sm">VS Code</a>
+          <a href="https://open-vsx.org/extension/wanderd/wanderd" class="hide-sm">Cursor</a>
+          <a href="https://github.com/surri/wanderd">GitHub</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap">
+        <span class="badge"><span class="dot"></span> Visual ERD editor with AI / MCP</span>
+        <h1>Design database schemas,<br />visually.</h1>
+        <p class="sub">Draw tables and relationships on an interactive canvas. Import &amp; export SQL across PostgreSQL, MySQL, and SQLite. Let AI assistants build diagrams for you through MCP.</p>
+
+        <div class="ctas">
+          <a class="btn primary" href="https://github.com/surri/wanderd/releases/latest/download/WandERD-mac-arm64.dmg">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.1 1.2-.4 2.3-1.1 3.1-.7.8-1.9 1.5-3 1.4-.1-1.1.5-2.3 1.1-3 .7-.8 1.9-1.4 3-1.5zM20 17.1c-.5 1.2-.8 1.7-1.5 2.8-1 1.5-2.4 3.3-4.1 3.3-1.5 0-1.9-1-4-1-2 0-2.5 1-4 1-1.7 0-3-1.7-4-3.1-2.7-4-3-8.6-1.3-11.1 1.2-1.7 3-2.7 4.8-2.7 1.8 0 2.9 1 4.4 1 1.4 0 2.3-1 4.4-1 1.5 0 3.2.8 4.3 2.3-3.8 2.1-3.2 7.5.8 8.8z"/></svg>
+            Download for Mac
+            <span class="meta">· Apple Silicon</span>
+          </a>
+          <a class="btn" href="https://marketplace.visualstudio.com/items?itemName=wanderd.wanderd">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 2 7 9.4 3.5 6.8 2 8l3.2 4L2 16l1.5 1.2L7 14.6 17 22l5-2.5v-15L17 2zm0 4.7v10.6l-7-5.3 7-5.3z"/></svg>
+            Install for VS Code
+          </a>
+          <a class="btn" href="https://open-vsx.org/extension/wanderd/wanderd">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            Cursor / Open VSX
+          </a>
+          <a class="btn" href="https://github.com/surri/wanderd">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.3.8 1 .8 2.1v3.1c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <p class="hint">Free · Open in VS Code, Cursor, VSCodium &amp; more · macOS app signed for Apple Silicon</p>
+
+        <div class="shot">
+          <img src="images/hero.png" alt="wanderd ERD editor screenshot" loading="lazy" />
+        </div>
+      </div>
+    </section>
+
+    <section class="features" id="features">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Everything you need to model data</h2>
+          <p>From a blank canvas to production SQL — and an AI that speaks your schema.</p>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg></div>
+            <h3>Visual ERD canvas</h3>
+            <p>Drag-and-drop tables, pan and zoom across large schemas, and navigate with a minimap on an interactive canvas.</p>
+          </div>
+          <div class="card">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg></div>
+            <h3>SQL import / export</h3>
+            <p>Turn existing DDL into diagrams instantly, and export back to SQL with constraints, indexes, and defaults intact.</p>
+          </div>
+          <div class="card">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5M3 12a9 3 0 0 0 18 0"/></svg></div>
+            <h3>Multi-dialect</h3>
+            <p>PostgreSQL, MySQL, and SQLite. Switch dialects anytime — column types convert automatically.</p>
+          </div>
+          <div class="card">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v6H4zM4 14h16v6H4zM8 10v4M16 10v4"/></svg></div>
+            <h3>Rich table editor</h3>
+            <p>Set types, toggle PK / nullable / unique, configure defaults and comments, and reorder columns by dragging.</p>
+          </div>
+          <div class="card">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M9 6h6a3 3 0 0 1 3 3v6"/></svg></div>
+            <h3>Relationships</h3>
+            <p>Draw foreign keys between columns, set cardinality (1:1, 1:n, n:m) and cascade rules with a visual editor.</p>
+          </div>
+          <div class="card">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 1 3 3v1a3 3 0 0 1 0 12v1a3 3 0 0 1-6 0v-1a3 3 0 0 1 0-12V5a3 3 0 0 1 3-3z"/><path d="M9 12h6"/></svg></div>
+            <h3>AI / MCP integration</h3>
+            <p>A built-in Model Context Protocol server lets Claude, Cursor, and more create and edit your diagrams programmatically.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="wrap">
+        <h2>Start designing in seconds</h2>
+        <p>Install the extension, or grab the desktop app for macOS.</p>
+        <div class="ctas">
+          <a class="btn primary" href="https://github.com/surri/wanderd/releases/latest/download/WandERD-mac-arm64.dmg">Download for Mac <span class="meta">· Apple Silicon</span></a>
+          <a class="btn" href="https://marketplace.visualstudio.com/items?itemName=wanderd.wanderd">Install for VS Code</a>
+          <a class="btn" href="https://open-vsx.org/extension/wanderd/wanderd">Cursor / Open VSX</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="fl">
+        <img src="icons/icon.png" alt="wanderd" />
+        <span>wanderd · Visual ERD editor</span>
+      </div>
+      <div class="links" style="display:flex; gap:20px;">
+        <a href="https://marketplace.visualstudio.com/items?itemName=wanderd.wanderd">VS Code</a>
+        <a href="https://open-vsx.org/extension/wanderd/wanderd">Open VSX</a>
+        <a href="https://github.com/surri/wanderd">GitHub</a>
+        <a href="https://github.com/surri/wanderd/releases">Releases</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
