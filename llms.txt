@@ -1,0 +1,31 @@
+# wanderd
+
+> wanderd is a free visual Entity-Relationship Diagram (ERD) editor for VS Code, Cursor, and macOS. Design database schemas on an interactive canvas, import/export SQL across PostgreSQL, MySQL and SQLite, and let AI assistants build diagrams via the Model Context Protocol (MCP).
+
+## What it is
+- Visual ERD / database schema editor.
+- Available as a VS Code extension, a Cursor / Open VSX extension, and a standalone macOS desktop app (Apple Silicon).
+- Stores diagrams as `.wand` files — human-readable JSON (tables, columns, relationships, indexes, canvas layout) that produces clean diffs for version control.
+- Free to use.
+
+## Key features
+- Interactive ERD canvas: drag-and-drop tables, pan/zoom, minimap.
+- SQL import/export (DDL) with constraints, indexes, defaults.
+- Multi-dialect: PostgreSQL, MySQL, SQLite — automatic column-type conversion.
+- Rich table editor: primary keys, nullable, unique, defaults, column/table comments.
+- Foreign-key relationships with cardinality (1:1, 1:n, n:m) and cascade rules.
+- AI / MCP integration: a built-in Model Context Protocol server lets Claude, Cursor, Gemini, and Codex create and edit diagrams programmatically.
+
+## Install & download
+- Website: https://surri.github.io/wanderd/
+- VS Code Marketplace: https://marketplace.visualstudio.com/items?itemName=wanderd.wanderd
+- Open VSX (Cursor, VSCodium, Kiro): https://open-vsx.org/extension/wanderd/wanderd
+- macOS app (Apple Silicon, .dmg): https://github.com/surri/wanderd/releases/latest/download/WandERD-mac-arm64.dmg
+- Source & releases: https://github.com/surri/wanderd
+
+## FAQ
+- Is it free? Yes.
+- Databases supported? PostgreSQL, MySQL, SQLite.
+- Works in Cursor? Yes, via Open VSX.
+- Runs on macOS? Yes, signed Apple Silicon desktop app.
+- What is a .wand file? Human-readable JSON schema document used by wanderd.

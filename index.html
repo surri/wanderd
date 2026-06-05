@@ -4,16 +4,116 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>wanderd — Visual ERD editor for VS Code, Cursor & desktop</title>
-  <meta name="description" content="Design database schemas visually. Import/export SQL across PostgreSQL, MySQL, and SQLite. Connect AI assistants via MCP. Available for VS Code, Cursor, and macOS." />
+  <meta name="description" content="Free visual database diagram (ERD) editor. Design schemas, import/export SQL across PostgreSQL, MySQL & SQLite, and let AI build diagrams via MCP. For VS Code, Cursor, and macOS." />
+  <link rel="canonical" href="https://surri.github.io/wanderd/" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+  <meta name="theme-color" content="#7c3aed" />
   <link rel="icon" type="image/png" href="icons/icon.png" />
+
+  <!-- Search engine verification — add codes from Google Search Console / Bing Webmaster, then uncomment:
+  <meta name="google-site-verification" content="GOOGLE_VERIFICATION_CODE" />
+  <meta name="msvalidate.01" content="BING_VERIFICATION_CODE" />
+  -->
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="wanderd" />
   <meta property="og:title" content="wanderd — Visual ERD editor" />
   <meta property="og:description" content="Design database schemas visually. SQL import/export, multi-dialect, AI/MCP integration. For VS Code, Cursor, and macOS." />
   <meta property="og:image" content="https://raw.githubusercontent.com/surri/wanderd/main/images/hero.png" />
   <meta property="og:url" content="https://surri.github.io/wanderd/" />
+
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="wanderd — Visual ERD editor for VS Code, Cursor & desktop" />
+  <meta name="twitter:description" content="Design database schemas visually. SQL import/export, multi-dialect, AI/MCP integration. For VS Code, Cursor, and macOS." />
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/surri/wanderd/main/images/hero.png" />
+
+  <!-- Structured data: SoftwareApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "wanderd",
+    "alternateName": "wanderd ERD editor",
+    "description": "Free visual Entity-Relationship Diagram (ERD) editor. Design database schemas on an interactive canvas, import and export SQL across PostgreSQL, MySQL and SQLite, and let AI assistants build diagrams via the Model Context Protocol (MCP).",
+    "url": "https://surri.github.io/wanderd/",
+    "image": "https://raw.githubusercontent.com/surri/wanderd/main/images/hero.png",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "macOS, Windows, Linux",
+    "softwareVersion": "0.1.13",
+    "downloadUrl": "https://github.com/surri/wanderd/releases/latest/download/WandERD-mac-arm64.dmg",
+    "softwareHelp": "https://github.com/surri/wanderd",
+    "featureList": [
+      "Visual ERD canvas with drag-and-drop tables and minimap",
+      "SQL import and export (DDL)",
+      "Multi-dialect support: PostgreSQL, MySQL, SQLite",
+      "Rich table editor: primary keys, constraints, defaults, comments",
+      "Foreign key relationships with cardinality and cascade rules",
+      "AI / MCP integration for Claude, Cursor and more"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "wanderd",
+      "url": "https://github.com/surri/wanderd"
+    }
+  }
+  </script>
+
+  <!-- Structured data: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is wanderd?",
+        "acceptedAnswer": { "@type": "Answer", "text": "wanderd is a free visual Entity-Relationship Diagram (ERD) editor for VS Code, Cursor, and macOS. You design database schemas on an interactive canvas and store them as human-readable .wand JSON files." }
+      },
+      {
+        "@type": "Question",
+        "name": "Is wanderd free?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. wanderd is free to use as a VS Code / Cursor extension and as a standalone macOS desktop app." }
+      },
+      {
+        "@type": "Question",
+        "name": "Which databases does wanderd support?",
+        "acceptedAnswer": { "@type": "Answer", "text": "wanderd supports PostgreSQL, MySQL, and SQLite. You can switch dialects at any time and column types are converted automatically." }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use wanderd in Cursor?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. wanderd is published on the Open VSX Registry, so it installs in Cursor, VSCodium, Kiro, and other VS Code–compatible editors." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I install wanderd in VS Code?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Open the Extensions panel (Ctrl/Cmd+Shift+X), search for \"wanderd\", and click Install — or install it from the VS Code Marketplace listing." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does wanderd run on macOS?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. A signed standalone desktop app for Apple Silicon Macs is available as a .dmg download from the GitHub releases page." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the AI / MCP integration?",
+        "acceptedAnswer": { "@type": "Answer", "text": "wanderd ships a built-in Model Context Protocol (MCP) server, so AI assistants like Claude and Cursor can create, read, and edit your ERD diagrams programmatically." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a .wand file?",
+        "acceptedAnswer": { "@type": "Answer", "text": "A .wand file is wanderd's document format: human-readable JSON that stores your tables, columns, relationships, indexes, and canvas layout. It produces clean diffs for version control." }
+      }
+    ]
+  }
+  </script>
 
   <style>
     :root {
@@ -138,6 +238,7 @@
     .card .ico svg { width: 22px; height: 22px; }
     .card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
     .card p { color: var(--muted); font-size: 14.5px; }
+    .card p code, .hint code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; background: rgba(124,58,237,0.14); color: var(--accent-2); padding: 1px 6px; border-radius: 5px; }
 
     /* CTA band */
     .band { text-align: center; padding: 80px 0 96px; }
@@ -162,6 +263,7 @@
         </a>
         <div class="links">
           <a href="#features" class="hide-sm">Features</a>
+          <a href="#faq" class="hide-sm">FAQ</a>
           <a href="https://marketplace.visualstudio.com/items?itemName=wanderd.wanderd" class="hide-sm">VS Code</a>
           <a href="https://open-vsx.org/extension/wanderd/wanderd" class="hide-sm">Cursor</a>
           <a href="https://github.com/surri/wanderd">GitHub</a>
@@ -199,7 +301,7 @@
         <p class="hint">Free · Open in VS Code, Cursor, VSCodium &amp; more · macOS app signed for Apple Silicon</p>
 
         <div class="shot">
-          <img src="images/hero.png" alt="wanderd ERD editor screenshot" loading="lazy" />
+          <img src="images/hero.png" width="2412" height="1208" alt="wanderd ERD editor — visual database schema canvas with tables and relationships" loading="lazy" />
         </div>
       </div>
     </section>
@@ -240,6 +342,49 @@
             <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 1 3 3v1a3 3 0 0 1 0 12v1a3 3 0 0 1-6 0v-1a3 3 0 0 1 0-12V5a3 3 0 0 1 3-3z"/><path d="M9 12h6"/></svg></div>
             <h3>AI / MCP integration</h3>
             <p>A built-in Model Context Protocol server lets Claude, Cursor, and more create and edit your diagrams programmatically.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features" id="faq">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Frequently asked questions</h2>
+          <p>Quick answers about wanderd, the visual ERD editor.</p>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <h3>What is wanderd?</h3>
+            <p>wanderd is a free visual Entity-Relationship Diagram (ERD) editor for VS Code, Cursor, and macOS. You design database schemas on an interactive canvas and store them as human-readable <code>.wand</code> JSON files.</p>
+          </div>
+          <div class="card">
+            <h3>Is wanderd free?</h3>
+            <p>Yes. wanderd is free to use as a VS Code / Cursor extension and as a standalone macOS desktop app.</p>
+          </div>
+          <div class="card">
+            <h3>Which databases does it support?</h3>
+            <p>wanderd supports PostgreSQL, MySQL, and SQLite. Switch dialects anytime — column types are converted automatically when you export SQL.</p>
+          </div>
+          <div class="card">
+            <h3>Can I use wanderd in Cursor?</h3>
+            <p>Yes. wanderd is on the Open VSX Registry, so it installs in Cursor, VSCodium, Kiro, and other VS Code–compatible editors.</p>
+          </div>
+          <div class="card">
+            <h3>How do I install it in VS Code?</h3>
+            <p>Open the Extensions panel (Ctrl/Cmd+Shift+X), search for “wanderd”, and click Install — or install from the VS Code Marketplace listing.</p>
+          </div>
+          <div class="card">
+            <h3>Does it run on macOS?</h3>
+            <p>Yes. A signed standalone desktop app for Apple Silicon Macs is available as a <code>.dmg</code> download from GitHub releases.</p>
+          </div>
+          <div class="card">
+            <h3>What is the AI / MCP integration?</h3>
+            <p>wanderd ships a built-in Model Context Protocol (MCP) server, so AI assistants like Claude and Cursor can create, read, and edit your ERD diagrams programmatically.</p>
+          </div>
+          <div class="card">
+            <h3>What is a .wand file?</h3>
+            <p>A <code>.wand</code> file is wanderd’s document format: human-readable JSON storing tables, columns, relationships, indexes, and canvas layout — producing clean diffs for version control.</p>
           </div>
         </div>
       </div>
