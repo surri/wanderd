@@ -7,6 +7,9 @@
   <a href="https://marketplace.visualstudio.com/items?itemName=wanderd.wanderd"><img src="https://img.shields.io/visual-studio-marketplace/v/wanderd.wanderd" alt="VS Code Marketplace" /></a>
   <a href="https://open-vsx.org/extension/wanderd/wanderd"><img src="https://img.shields.io/open-vsx/v/wanderd/wanderd" alt="Open VSX" /></a>
   <a href="https://marketplace.visualstudio.com/items?itemName=wanderd.wanderd"><img src="https://img.shields.io/visual-studio-marketplace/i/wanderd.wanderd" alt="Installs" /></a>
+  <a href="https://github.com/surri/wanderd"><img src="https://img.shields.io/github/stars/surri/wanderd?style=social" alt="GitHub stars" /></a>
+
+  <p>🌐 <a href="https://surri.github.io/wanderd/">Website</a> · ⭐ <strong>If wanderd helps you, <a href="https://github.com/surri/wanderd">give it a star</a></strong> to support the project!</p>
 </div>
 
 ---
